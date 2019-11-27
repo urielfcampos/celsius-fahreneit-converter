@@ -1,8 +1,20 @@
 const Koa = require('koa')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+const Router = require('koa-router')
 
 const app = new Koa()
+const router = new Router()
+
+router.get('/convert/:value', (ctx, next) => {
+  const fn = celsius => celsius * (9 / 5) + 32
+
+  ctx.body = {
+    value: fn(ctx.params.value)
+  }
+})
+
+app.use(router.routes()).use(router.allowedMethods())
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')

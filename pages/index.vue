@@ -1,35 +1,34 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        celsius-fahreneit-converter
-      </h1>
-      <h2 class="subtitle">
-        My delightful Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <h1>Conversor de temperatura Celsius-Fahrenheit</h1>
+    <input v-model="temperatura" type="number">
+    <input @click="convertTemperatura" type="button">
+    <h2>temperatura original</h2>
+    <p>{{ temperatura }}</p>
+    <h2>Temperatura convertida</h2>
+    <p>{{ temperaturaConvertida }}</p>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
+  data() {
+    return {
+      temperatura: 0,
+      temperaturaConvertida: 0
+    }
+  },
+  methods: {
+    convertTemperatura() {
+      this.$axios
+        .get(`/convert/${this.temperatura}`)
+        .then((res) => {
+          this.temperaturaConvertida = res.value
+        })
+        .catch((err) => {
+          console.error('Some error occurred')
+        })
+    }
   }
 }
 </script>
